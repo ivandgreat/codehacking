@@ -4,6 +4,8 @@
 @section('content')
   <h1>Create Users</h1>
 
+  <div class="row">
+
     {!! Form::open(['method'=>'POST','action'=>'AdminUsersController@store','files'=>true]) !!}
 
     <div class="form-group">
@@ -43,7 +45,13 @@
 
     {!! Form::close() !!}
 
-  @include('includes.form_error')
+</div>
+
+<div class="row">
+    @include('includes.form_error')
+</div>
+
+
 
 
 @stop

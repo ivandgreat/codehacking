@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
-
 use App\Http\Requests\UsersRequest;
 use App\Http\Requests\UsersEditRequest;
 use App\User;
@@ -54,7 +54,18 @@ class AdminUsersController extends Controller
 
         // User::create($request->all());
 
+        if(trim($request->password) == ''){
 
+            $input = $request->except('password');
+
+        } else{
+
+
+            $input = $request->all();
+
+            $input['password'] = bcrypt($request->password);
+
+        }
 
         if($file = $request->file('photo_id')){
 
@@ -156,5 +167,20 @@ class AdminUsersController extends Controller
     public function destroy($id)
     {
         //
+
+        // return "DESTROY"; // For Testing only this code
+
+        // User::findOrFail($id)->delete();
+
+        $user = User::findOrFail($id);
+
+        unlink(public_path() . "/images/".$user->photo->file);
+
+        $user->delete();
+
+        Session::flash('deleted_user', 'the user has been deleted');
+
+        return redirect('admin/users');
+
     }
 }

@@ -34,4 +34,39 @@ class User extends Authenticatable
       return $this->belongsTo('App\Photo');
 
     }
+
+    // it was not yet explained
+    // public function setPasswordAttribute($password){
+    //   if(!empty($password)){
+    //     $this->attributes['password'] = bcrypt($password);
+    //   }
+    // }
+
+
+    public function isAdmin(){
+
+      if($this->role->name == 'administrator' && $this->is_active == 1){
+        return true;
+      }
+
+      return false;
+    }
+
+    // this is mutators added from devlob youtube, always start with set
+    //-----------------------------------------------------------------------
+    public function setNameAttribute($value){
+      $this->attributes['name'] = ucfirst($value);
+    }
+
+    public function setPasswordAttribute($value){
+      $this->attributes['password'] = bcrypt($value);
+    }
+    //-----------------------------------------------------------------------
+
+    public function posts(){
+
+      return $this->hasMany('App\Post');
+
+    }
+
 }
